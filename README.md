@@ -1,4 +1,3 @@
-# WanderLust-Delta-Project
+# e commerce site
 Complete MERN stack project
 
-WebSite demo link: https://wanderlust-delta-project.onrender.com
