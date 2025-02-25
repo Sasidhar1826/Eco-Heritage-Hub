@@ -1,0 +1,111 @@
+<style>
+    .navbar {
+        background-color: #ffffff !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .navbar-brand img {
+        border-radius: 50%;
+        height: 3rem;
+    }
+
+    .nav-link {
+        color: #1e293b !important;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #0ea5e9 !important;
+    }
+
+    .search-btn {
+        background-color: #fe424d;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 25px;
+        padding: 0 1.5rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .search-input {
+        border-radius: 25px;
+    }
+
+    .search-btn:hover {
+        background-color: #d9343f;
+    }
+
+    .dropdown-menu {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+        .navbar-nav {
+            text-align: center !important;
+        }
+    }
+</style>
+
+<nav class="navbar navbar-expand-md border-bottom sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/products"><img src="/eco heritage hub.ico" alt="logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/products">Explore</a>
+            </div>
+            <div class="navbar-nav ms-auto">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2 search-input" type="search" placeholder="Search product">
+                    <button class="btn search-btn" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                    </button>
+                </form>
+            </div>
+
+            <!-- Dropdown filter for districts -->
+            <div class="navbar-nav ms-3">
+                <div class="dropdown">
+                    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Filter by District
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Anantapur</a></li>
+                        <li><a class="dropdown-item" href="#">Chittoor</a></li>
+                        <li><a class="dropdown-item" href="#">East Godavari</a></li>
+                        <li><a class="dropdown-item" href="#">Guntur</a></li>
+                        <li><a class="dropdown-item" href="#">Kadapa</a></li>
+                        <li><a class="dropdown-item" href="#">Krishna</a></li>
+                        <li><a class="dropdown-item" href="#">Kurnool</a></li>
+                        <li><a class="dropdown-item" href="#">Nellore</a></li>
+                        <li><a class="dropdown-item" href="#">Prakasam</a></li>
+                        <li><a class="dropdown-item" href="#">Srikakulam</a></li>
+                        <li><a class="dropdown-item" href="#">Visakhapatnam</a></li>
+                        <li><a class="dropdown-item" href="#">Vizianagaram</a></li>
+                        <li><a class="dropdown-item" href="#">West Godavari</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- User Authentication Links -->
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/products/new">Add Product</a>
+                <% if (!currUser) { %>
+                    <a class="nav-link" href="/signup"><b>Signup</b></a>
+                    <a class="nav-link" href="/login"><b>Login</b></a>
+                    <% } %>
+                        <% if (currUser) { %>
+                            <a class="nav-link" href="/logout">Logout</a>
+                            <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

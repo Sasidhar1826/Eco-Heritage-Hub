@@ -1,0 +1,185 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <!-- Custom Styles -->
+    <style>
+        #filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 0.1rem !important;
+            background-color: #f8fafc !important;
+            border-radius: 1rem !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .filter {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0.5rem !important;
+            padding: 0.5rem !important;
+            transition: all 0.3s ease-in-out !important;
+            opacity: 0.8 !important;
+            border-radius: 0.8rem !important;
+        }
+
+        .filter:hover {
+            background-color: #e0f2fe !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+            opacity: 1 !important;
+            cursor: pointer !important;
+            transform: translateY(-5px) !important;
+        }
+
+        .filter p {
+            font-size: 0.85rem !important;
+            margin: 0 !important;
+        }
+
+        .tax-toggle {
+            border: 1px solid #1e293b !important;
+            border-radius: 1rem !important;
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+            background-color: #e2e8f0 !important;
+            cursor: pointer !important;
+        }
+
+        .filter-swiper {
+            display: flex;
+            width: 70% !important;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 10px !important;
+        }
+
+        .swiper-pagination {
+            display: none !important;
+        }
+
+        .listing-link {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        .listing-card {
+            transition: all 0.3s ease-in-out !important;
+            border-radius: 1rem !important;
+            overflow: hidden !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .listing-card:hover {
+            transform: scale(1.03) !important;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .card-img-top {
+            width: 100% !important;
+            height: 15rem !important;
+            object-fit: cover !important;
+            padding-bottom: 15px !important;
+        }
+
+        .card-img-overlay i {
+            color: #f43f5e !important;
+            font-size: 1.5rem !important;
+            float: right !important;
+            cursor: pointer !important;
+        }
+
+        .tax-info {
+            display: none;
+            color: #f43f5e !important;
+            font-size: 0.85rem !important;
+        }
+
+        @media (max-width: 768px) {
+            #filters {
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+
+            .filter-swiper {
+                width: 100% !important;
+            }
+
+            .tax-toggle {
+                margin-left: 0 !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+
+    <!-- Filters Section -->
+    <div id="filters">
+        <div #swiperRef="" class="filter-swiper swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-shirt"></i></div>
+                    <p>Handlooms</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                    <p>Toys</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-candy-cane"></i></div>
+                    <p>Sweets</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-gem"></i></div>
+                    <p>Jewelry</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-mug-hot"></i></div>
+                    <p>Pottery</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-pepper-hot"></i></div>
+                    <p>Spices</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-paintbrush"></i></div>
+                    <p>Art</p>
+                </div>
+                <div class="filter swiper-slide">
+                    <div class="icon"><i class="fa-solid fa-couch"></i></div>
+                    <p>Home Decor</p>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <!-- Listings Section -->
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for(let listing of allListing) { %>
+            <a href="/products/<%= listing._id %>" class="listing-link">
+                <div class="card col listing-card">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="Product image">
+                    <div class="card-img-overlay">
+                        <i class="fa-regular fa-heart"></i>
+                    </div>
+                    <div class="card-body"
+                        style="padding: 16px; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                        <p class="card-text" style="font-family: Arial, sans-serif; color: #333;">
+                            <b style="font-size: 18px; color: #2c3e50; letter-spacing: 1px;">
+                                <%= listing.title.toUpperCase() %>
+                            </b><br>
+                            <span style="font-size: 16px; color: #27ae60; font-weight: 600;">
+                                &#8377;<%= listing.price.toLocaleString("en-IN") %>
+                            </span>
+                            <span style="font-size: 14px; color: #7f8c8d;"></span>
+                        </p>
+                    </div>
+
+                </div>
+            </a>
+            <% } %>
+    </div>

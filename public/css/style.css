@@ -1,0 +1,145 @@
+body {
+  font-family: "Gabarito", sans-serif;
+  font-family: "Merriweather", serif;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-family: "Sacramento", cursive;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.flash {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  flex: 1;
+}
+
+.listing-link {
+  text-decoration: none;
+}
+
+/* navbar */
+.navbar {
+  height: 5rem;
+  background-color: white;
+}
+
+.fa-compass {
+  font-size: 2rem;
+  color: rgb(246, 74, 74);
+}
+
+.nav-link {
+  color: #222222 !important;
+}
+
+/* footer */
+/* kept inside footer itself */
+
+.f-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.f-info-socials i {
+  font-size: 1.8rem;
+  margin: 0 10px;
+  color: #f1f5f9;
+  transition: color 0.3s ease;
+}
+
+.f-info-socials i:hover {
+  color: #38bdf8; /* Light blue on hover */
+  cursor: pointer;
+}
+
+.f-info-brand {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.f-info-links a {
+  margin: 0 10px;
+  color: #f1f5f9;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.f-info-links a:hover {
+  color: #38bdf8;
+}
+
+@media (min-width: 600px) {
+  .f-info {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* cards */
+
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+}
+
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.card-text {
+  font-weight: 400 !important;
+}
+
+/* Card effect */
+.card-img-overlay {
+  opacity: 0;
+}
+
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: white;
+}
+
+/* Edit page */
+.add-btn {
+  background-color: rgb(246, 74, 74) !important;
+  border: none !important;
+}
+
+/* Show page */
+.show-img {
+  height: 40vh;
+  width: 90% !important;
+  margin: auto;
+}
+
+.btns {
+  display: flex;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Map styling */
+#map {
+  height: 400px;
+  width: 80%;
+}
