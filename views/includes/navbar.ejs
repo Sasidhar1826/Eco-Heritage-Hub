@@ -39,9 +39,19 @@
         background-color: #d9343f;
     }
 
-    .dropdown-menu {
-        max-height: 200px;
-        overflow-y: auto;
+    .userbtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 25px;
+        font-size: medium;
+        padding: 0.32rem 1.5rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .logoutbtn {
+        margin-left: 5px !important;
     }
 
     @media (max-width: 768px) {
@@ -70,41 +80,41 @@
                 </form>
             </div>
 
-            <!-- Dropdown filter for districts -->
-            <div class="navbar-nav ms-3">
-                <div class="dropdown">
-                    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Filter by District
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Anantapur</a></li>
-                        <li><a class="dropdown-item" href="#">Chittoor</a></li>
-                        <li><a class="dropdown-item" href="#">East Godavari</a></li>
-                        <li><a class="dropdown-item" href="#">Guntur</a></li>
-                        <li><a class="dropdown-item" href="#">Kadapa</a></li>
-                        <li><a class="dropdown-item" href="#">Krishna</a></li>
-                        <li><a class="dropdown-item" href="#">Kurnool</a></li>
-                        <li><a class="dropdown-item" href="#">Nellore</a></li>
-                        <li><a class="dropdown-item" href="#">Prakasam</a></li>
-                        <li><a class="dropdown-item" href="#">Srikakulam</a></li>
-                        <li><a class="dropdown-item" href="#">Visakhapatnam</a></li>
-                        <li><a class="dropdown-item" href="#">Vizianagaram</a></li>
-                        <li><a class="dropdown-item" href="#">West Godavari</a></li>
-                    </ul>
-                </div>
-            </div>
-
             <!-- User Authentication Links -->
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/products/new">Add Product</a>
-                <% if (!currUser) { %>
-                    <a class="nav-link" href="/signup"><b>Signup</b></a>
-                    <a class="nav-link" href="/login"><b>Login</b></a>
+                <% if (currUser && currUser.role==="seller" ) { %>
+                    <a class="btn btn-outline-danger me-2 userbtn" href="/products/new">
+                        <i class="fas fa-plus"></i> Add Product
+                    </a>
+
+                    <a class="btn btn-primary userbtn" href="/products/my-listings">
+                        <i class="fas fa-list"></i> My products
+                    </a>
                     <% } %>
-                        <% if (currUser) { %>
-                            <a class="nav-link" href="/logout">Logout</a>
+                        <% if (!currUser) { %>
+                            <a class="nav-link" href="/signup"><b>Signup</b></a>
+                            <a class="nav-link" href="/login"><b>Login</b></a>
                             <% } %>
+
+                                <% if (currUser) { %>
+                                    <% if (currUser.role!="seller" ) { %>
+                                        <i class="fas fa-shopping-cart ms-1 mt-3 me-3"></i>
+                                        <i class="fas fa-user ms-1 mt-3 me-2" id="change"></i>
+                                        <div>
+                                            <p style="margin-top: 12px !important;" class="fw-bold fs-6 me-2 mt-2">
+                                                Hi,
+                                                <%= currUser.username %>
+                                            </p>
+                                        </div>
+                                        <% } %>
+                                            <div>
+                                                <a class="btn btn-danger logoutbtn userbtn mt-2 " href="/logout">
+                                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                                </a>
+                                            </div>
+                                            <% } %>
+
+
             </div>
         </div>
     </div>

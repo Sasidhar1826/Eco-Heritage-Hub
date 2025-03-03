@@ -93,10 +93,20 @@
             cursor: pointer !important;
         }
 
-        .tax-info {
-            display: none;
-            color: #f43f5e !important;
-            font-size: 0.85rem !important;
+        #region-filter {
+            background-color: white !important;
+            /* Forces white */
+            color: black !important;
+            border: 1px solid #ced4da;
+            /* Standard Bootstrap border */
+            padding: 8px;
+            border-radius: 5px;
+            appearance: none;
+            /* Removes default browser styling */
+            -webkit-appearance: none;
+            /* Safari-specific */
+            -moz-appearance: none;
+            /* Firefox-specific */
         }
 
         @media (max-width: 768px) {
@@ -108,47 +118,119 @@
             .filter-swiper {
                 width: 100% !important;
             }
-
-            .tax-toggle {
-                margin-left: 0 !important;
-                justify-content: center !important;
-            }
         }
     </style>
 
     <!-- Filters Section -->
     <div id="filters">
+        <!-- Region Filter Dropdown -->
+        <div class="d-flex justify-content-center align-items-center">
+            <select id="region-filter" class="form-select tax-toggle ms-4">
+                <option value="">Region Filter</option>
+
+                <!-- Andhra Pradesh -->
+                <optgroup label="Andhra Pradesh">
+                    <option value="Anakapalli">Anakapalli</option>
+                    <option value="Ananthapuramu">Ananthapuramu</option>
+                    <option value="Annamayya">Annamayya</option>
+                    <option value="Bapatla">Bapatla</option>
+                    <option value="Chittoor">Chittoor</option>
+                    <option value="Dr. B.R. Ambedkar Konaseema">Dr. B.R. Ambedkar Konaseema</option>
+                    <option value="East Godavari">East Godavari</option>
+                    <option value="Eluru">Eluru</option>
+                    <option value="Guntur">Guntur</option>
+                    <option value="Kakinada">Kakinada</option>
+                    <option value="Krishna">Krishna</option>
+                    <option value="Kurnool">Kurnool</option>
+                    <option value="Nandyal">Nandyal</option>
+                    <option value="NTR">NTR</option>
+                    <option value="Palnadu">Palnadu</option>
+                    <option value="Parvathipuram Manyam">Parvathipuram Manyam</option>
+                    <option value="Prakasam">Prakasam</option>
+                    <option value="Srikakulam">Srikakulam</option>
+                    <option value="Nellore">Nellore</option>
+                    <option value="Sri Sathya Sai">Sri Sathya Sai</option>
+                    <option value="Tirupati">Tirupati</option>
+                    <option value="Visakhapatnam">Visakhapatnam</option>
+                    <option value="Vizianagaram">Vizianagaram</option>
+                    <option value="West Godavari">West Godavari</option>
+                    <option value="YSR (Kadapa)">YSR (Kadapa)</option>
+                </optgroup>
+
+                <!-- Tamil Nadu -->
+                <optgroup label="Tamil Nadu">
+                    <option value="Ariyalur">Ariyalur</option>
+                    <option value="Chengalpattu">Chengalpattu</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Coimbatore">Coimbatore</option>
+                    <option value="Cuddalore">Cuddalore</option>
+                    <option value="Dharmapuri">Dharmapuri</option>
+                    <option value="Dindigul">Dindigul</option>
+                    <option value="Erode">Erode</option>
+                    <option value="Kallakurichi">Kallakurichi</option>
+                    <option value="Kanchipuram">Kanchipuram</option>
+                    <option value="Kanyakumari">Kanyakumari</option>
+                    <option value="Karur">Karur</option>
+                    <option value="Krishnagiri">Krishnagiri</option>
+                    <option value="Madurai">Madurai</option>
+                    <option value="Mayiladuthurai">Mayiladuthurai</option>
+                    <option value="Nagapattinam">Nagapattinam</option>
+                    <option value="Namakkal">Namakkal</option>
+                    <option value="Nilgiris">Nilgiris</option>
+                    <option value="Perambalur">Perambalur</option>
+                    <option value="Pudukkottai">Pudukkottai</option>
+                    <option value="Ramanathapuram">Ramanathapuram</option>
+                    <option value="Ranipet">Ranipet</option>
+                    <option value="Salem">Salem</option>
+                    <option value="Sivaganga">Sivaganga</option>
+                    <option value="Tenkasi">Tenkasi</option>
+                    <option value="Thanjavur">Thanjavur</option>
+                    <option value="Theni">Theni</option>
+                    <option value="Thoothukudi">Thoothukudi</option>
+                    <option value="Tiruchirappalli">Tiruchirappalli</option>
+                    <option value="Tirunelveli">Tirunelveli</option>
+                    <option value="Tirupattur">Tirupattur</option>
+                    <option value="Tiruppur">Tiruppur</option>
+                    <option value="Tiruvallur">Tiruvallur</option>
+                    <option value="Tiruvannamalai">Tiruvannamalai</option>
+                    <option value="Tiruvarur">Tiruvarur</option>
+                    <option value="Vellore">Vellore</option>
+                    <option value="Viluppuram">Viluppuram</option>
+                    <option value="Virudhunagar">Virudhunagar</option>
+                </optgroup>
+            </select>
+        </div>
         <div #swiperRef="" class="filter-swiper swiper mySwiper">
             <div class="swiper-wrapper">
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Handlooms">
                     <div class="icon"><i class="fa-solid fa-shirt"></i></div>
                     <p>Handlooms</p>
                 </div>
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Toys">
                     <div class="icon"><i class="fa-solid fa-puzzle-piece"></i></div>
                     <p>Toys</p>
                 </div>
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Sweets">
                     <div class="icon"><i class="fa-solid fa-candy-cane"></i></div>
                     <p>Sweets</p>
                 </div>
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Jewelry">
                     <div class="icon"><i class="fa-solid fa-gem"></i></div>
                     <p>Jewelry</p>
                 </div>
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Pottery">
                     <div class="icon"><i class="fa-solid fa-mug-hot"></i></div>
                     <p>Pottery</p>
                 </div>
-                <div class="filter swiper-slide">
-                    <div class="icon"><i class="fa-solid fa-pepper-hot"></i></div>
-                    <p>Spices</p>
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Personal Care">
+                    <div class="icon"><i class="fa-solid fa-spa"></i></div>
+                    <p>Care</p>
                 </div>
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="Art">
                     <div class="icon"><i class="fa-solid fa-paintbrush"></i></div>
                     <p>Art</p>
                 </div>
-                <div class="filter swiper-slide">
+                <div class="filter swiper-slide align-self-center mt-2" data-category="home-decor">
                     <div class="icon"><i class="fa-solid fa-couch"></i></div>
                     <p>Home Decor</p>
                 </div>
@@ -170,16 +252,35 @@
                         style="padding: 16px; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
                         <p class="card-text" style="font-family: Arial, sans-serif; color: #333;">
                             <b style="font-size: 18px; color: #2c3e50; letter-spacing: 1px;">
-                                <%= listing.title.toUpperCase() %>
+                                <%= listing.title%>
                             </b><br>
-                            <span style="font-size: 16px; color: #27ae60; font-weight: 600;">
-                                &#8377;<%= listing.price.toLocaleString("en-IN") %>
-                            </span>
-                            <span style="font-size: 14px; color: #7f8c8d;"></span>
                         </p>
+
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span style="font-size: 1.2rem; color: rgb(235, 62, 62); font-weight: 600;">
+                                <span style="font-size: 0.9rem;">&#8377;</span>
+                                <%= listing.price %>
+                            </span>
+                        </div>
+
                     </div>
 
                 </div>
             </a>
             <% } %>
     </div>
+    <script>
+        document.querySelectorAll('.filter').forEach(filter => {
+            filter.addEventListener('click', function () {
+                const category = this.getAttribute('data-category');
+                window.location.href = `/products/category/${category}`;
+            });
+        });
+
+        document.getElementById('region-filter').addEventListener('change', function () {
+            const selectedRegion = this.value;
+            if (selectedRegion) {
+                window.location.href = `/products/region/${selectedRegion}`;
+            }
+        });
+    </script>

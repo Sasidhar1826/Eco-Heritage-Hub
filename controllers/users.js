@@ -2,14 +2,14 @@ const User = require("../models/user.js");
 
 module.exports.signup = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const newUser = new User({ email, username });
+    const { username, email, password, role } = req.body;
+    const newUser = new User({ email, username, role });
     const registerUser = await User.register(newUser, password);
     req.login(registerUser, (err) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", "Welcome to WanderLust");
+      req.flash("success", "Welcome to Eco Heritage Hub");
       res.redirect("/products");
     });
   } catch (e) {
@@ -19,10 +19,17 @@ module.exports.signup = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  req.flash("success", "Welcome back to WanderLust");
-  //when we will try to login form "/listings" then isLoggedIn middleware will never be called and req.session.redirectUrl will remain uninitilized ie null.
+  req.flash("success", "Welcome back to Eco Heritage Hub");
+
+  // Default redirect
   let redirectUrl = res.locals.redirectUrl || "/products";
 
+  // Check if user is a seller and update redirectUrl
+  if (req.user && req.user.role === "seller") {
+    redirectUrl = "products/my-listings";
+  }
+
+  // Prevent DELETE redirects
   if (redirectUrl.includes("DELETE")) {
     redirectUrl = "/products";
   }

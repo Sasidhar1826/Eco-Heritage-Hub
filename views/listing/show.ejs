@@ -93,7 +93,10 @@
                                     </p>
                                     <form action="/products/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
                                         method="post" class="mb-3">
-                                        <button type="submit" class="btn btn-dark">Delete</button>
+
+                                        <% if (currUser && currUser._id.equals(review.author._id)) { %>
+                                            <button type="submit" class="btn btn-dark">Delete</button>
+                                            <% } %>
                                     </form>
                                 </div>
                             </div>

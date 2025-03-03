@@ -99,7 +99,7 @@ body {
 }
 
 .card-body {
-  padding: 0 !important;
+  padding: 1.5rem !important;
 }
 
 .card-text {

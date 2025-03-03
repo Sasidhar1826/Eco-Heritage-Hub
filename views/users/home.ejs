@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Eco Heritage Hub</title>
+    <style>
+        :root {
+            --primary-color: #4A6741;
+            --primary-hover: #5A7A50;
+            --background-light: #fafafa;
+            --text-dark: #333;
+            --features-bg: #f2f5f0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            background-color: var(--background-light);
+        }
+
+        .logo {
+            max-width: min(400px, 90%);
+            margin: 0 auto 2rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Enhanced Slider */
+        .slider-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 2rem auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            position: relative;
+            min-width: 100%;
+            aspect-ratio: 16 / 9;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: var(--primary-color);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 20px;
+            background-color: var(--features-bg);
+        }
+
+        .features .container {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 20px;
+            }
+
+            .slide-caption {
+                font-size: 0.9rem;
+                bottom: 0.5rem;
+                left: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero">
+        <div class="slider-container " style="height: 80vh;">
+            <div class="slider">
+                <div class="slide">
+                    <img src="slider-4.png" alt="Traditional eco-friendly crafts" loading="lazy">
+                    <div class="slide-caption">Handmade Organic Textiles</div>
+                </div>
+                <div class="slide">
+                    <img src="slider-7.jpg" alt="Sustainable pottery workshop" loading="lazy">
+                    <div class="slide-caption">Artisan Craftsmanship</div>
+                </div>
+                <div class="slide">
+                    <img src="slider-2.png" alt="Natural dyeing process" loading="lazy">
+                    <div class="slide-caption">Natural Materials</div>
+                </div>
+                <div class="slide">
+                    <img src="slider-8.jpg" alt="Natural dyeing process" loading="lazy">
+                    <div class="slide-caption">Natural Materials</div>
+                </div>
+                <div class="slide">
+                    <img src="slider-3.png" alt="Natural dyeing process" loading="lazy">
+                    <div class="slide-caption">Natural Materials</div>
+                </div>
+                <div class="slide">
+                    <img src="slider-5.png" alt="Natural dyeing process" loading="lazy">
+                    <div class="slide-caption">Natural Materials</div>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="slider-dot active" aria-label="View slide 1"></button>
+                <button class="slider-dot" aria-label="View slide 2"></button>
+                <button class="slider-dot" aria-label="View slide 3"></button>
+                <button class="slider-dot" aria-label="View slide 4"></button>
+            </div>
+        </div>
+        <h2 class="text-success fw-bold">Welcome To</h2>
+        <div>
+            <img src="landing-logo.jpg" alt="Eco Heritage Hub Logo" style="height: 40vh;">
+        </div>
+        <a href="/products" class="btn btn-success px-4 py-2 fw-bold">Explore Products</a>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Our Commitment</h2>
+            <p>
+                Eco Heritage Hub bridges cultural heritage with modern sustainability through our global marketplace.
+                We partner directly with artisans to bring you authentic, eco-conscious crafts while supporting
+                traditional communities and environmental stewardship.
+            </p>
+        </div>
+    </section>
+
+    <script>
+        let currentSlide = 0;
+        const slider = document.querySelector('.slider');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = document.querySelectorAll('.slide').length;
+        let autoSlideInterval;
+        let touchStartX = 0;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+                dot.setAttribute('aria-current', index === currentSlide);
+            });
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 7000);
+        }
+
+        // Touch handling
+        slider.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        slider.addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > 50) {
+                currentSlide = diff > 0
+                    ? (currentSlide + 1) % totalSlides
+                    : (currentSlide - 1 + totalSlides) % totalSlides;
+                updateSlider();
+                resetAutoSlide();
+            }
+        });
+
+        // Dot controls
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlider();
+                resetAutoSlide();
+            });
+        });
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        // Initialize
+        startAutoSlide();
+        updateSlider();
+    </script>
+</body>
+
+</html>

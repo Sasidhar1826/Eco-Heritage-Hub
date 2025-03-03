@@ -3,7 +3,7 @@
     <body>
         <div class="row">
             <div class="col-8 offset-2">
-                <h3>Add new product</h3>
+                <h3>Add New Product</h3>
                 <br>
                 <form action="/products" method="post" class="needs-validation" novalidate
                     enctype="multipart/form-data">
@@ -12,47 +12,72 @@
                         <input type="text" placeholder="Enter title" name="listing[title]" class="form-control"
                             id="title" required>
                     </div>
+
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea name="listing[description]" cols="20" rows="5" placeholder="Enter description "
+                        <textarea name="listing[description]" cols="20" rows="5" placeholder="Enter description"
                             class="form-control" required></textarea>
-                        <div class="invalid-feedback">
-                            Please enter short description
-                        </div>
+                        <div class="invalid-feedback">Please enter a short description</div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="image" class="form-label">Uploag Image</label>
+                        <label for="image" class="form-label">Upload Image</label>
                         <input type="file" placeholder="Add image" name="listing[image]" class="form-control" required>
-
                     </div>
 
                     <div class="row">
                         <div class="mb-3 col-md-6">
                             <label for="price" class="form-label">Price</label>
                             <input type="number" placeholder="1200" name="listing[price]" class="form-control" required>
-                            <div class="invalid-feedback">
-                                Price should be more than 100
-                            </div>
+                            <div class="invalid-feedback">Price should be more than 100</div>
                         </div>
 
                         <div class="mb-3 col-md-6">
                             <label for="country" class="form-label">Country</label>
-                            <input type="text" placeholder="India" name="listing[country]" class="form-control"
-                                required>
-                            <div class="invalid-feedback">
-                                Country should be valid
-                            </div>
+                            <input type="text" value="India" name="listing[country]" class="form-control" readonly>
                         </div>
                     </div>
 
                     <div class="mb-4">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="listing[category]" class="form-select" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option>Handlooms</option>
+                            <option>Toys</option>
+                            <option>Sweets</option>
+                            <option>Jewelry</option>
+                            <option>Pottery</option>
+                            <option>Personal Care</option>
+                            <option>Art</option>
+                            <option>Others</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a valid category</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="state" class="form-label">State</label>
+                        <select name="listing[state]" id="state" class="form-select" required>
+                            <option value="" disabled selected>Select a state</option>
+                            <option>Andhra Pradesh</option>
+                            <option>Tamil Nadu</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a valid state</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="district" class="form-label">District</label>
+                        <select name="listing[district]" id="district" class="form-select" required>
+                            <option value="" disabled selected>Select a district</option>
+                            <!-- Districts will be dynamically populated based on state selection -->
+                        </select>
+                        <div class="invalid-feedback">Please select a valid district</div>
+                    </div>
+
+                    <div class="mb-4">
                         <label for="location" class="form-label">Location</label>
-                        <input type="text" placeholder="Patna,Bihar" name="listing[location]" class="form-control"
+                        <input type="text" placeholder="Enter location" name="listing[location]" class="form-control"
                             required>
-                        <div class="invalid-feedback">
-                            Location should be valid
-                        </div>
+                        <div class="invalid-feedback">Location should be valid</div>
                     </div>
 
                     <button type="submit" class="btn btn-dark add-btn">Add</button>
@@ -60,5 +85,46 @@
                 <br><br>
             </div>
         </div>
-        <!-- listing[title] will create a key value pair in form  js objects which will be sent in req body. -->
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const stateSelect = document.getElementById("state");
+                const districtSelect = document.getElementById("district");
+
+                const districts = {
+                    "Andhra Pradesh": [
+                        "Anakapalli", "Ananthapuramu", "Annamayya", "Bapatla", "Chittoor",
+                        "Dr. B.R. Ambedkar Konaseema", "East Godavari", "Eluru", "Guntur",
+                        "Kakinada", "Krishna", "Kurnool", "Nandyal", "NTR", "Palnadu",
+                        "Parvathipuram Manyam", "Prakasam", "Srikakulam", "Nellore",
+                        "Sri Sathya Sai", "Tirupati", "Visakhapatnam", "Vizianagaram",
+                        "West Godavari", "YSR (Kadapa)"
+                    ],
+                    "Tamil Nadu": [
+                        "Ariyalur", "Chengalpattu", "Chennai", "Coimbatore", "Cuddalore",
+                        "Dharmapuri", "Dindigul", "Erode", "Kallakurichi", "Kanchipuram",
+                        "Kanyakumari", "Karur", "Krishnagiri", "Madurai", "Mayiladuthurai",
+                        "Nagapattinam", "Namakkal", "Nilgiris", "Perambalur", "Pudukkottai",
+                        "Ramanathapuram", "Ranipet", "Salem", "Sivaganga", "Tenkasi",
+                        "Thanjavur", "Theni", "Thoothukudi", "Tiruchirappalli", "Tirunelveli",
+                        "Tirupattur", "Tiruppur", "Tiruvallur", "Tiruvannamalai", "Tiruvarur",
+                        "Vellore", "Viluppuram", "Virudhunagar"
+                    ]
+                };
+
+                stateSelect.addEventListener("change", function () {
+                    const selectedState = this.value;
+                    districtSelect.innerHTML = '<option value="" disabled selected>Select a district</option>';
+
+                    if (selectedState in districts) {
+                        districts[selectedState].forEach(district => {
+                            const option = document.createElement("option");
+                            option.value = district;
+                            option.textContent = district;
+                            districtSelect.appendChild(option);
+                        });
+                    }
+                });
+            });
+        </script>
     </body>

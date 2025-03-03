@@ -18,6 +18,14 @@ module.exports.isLoggedIn = (req, res, next) => {
   next();
 };
 
+module.exports.isSeller = (req, res, next) => {
+  if (req.user && req.user.role === "seller") {
+    return next();
+  }
+  req.flash("error", "You must be a seller to access this page.");
+  return res.redirect("/");
+};
+
 module.exports.isOwner = async (req, res, next) => {
   //authorization step
   let { id } = req.params;
