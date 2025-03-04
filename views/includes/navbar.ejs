@@ -77,8 +77,9 @@
                 <a class="nav-link" href="/products">Explore</a>
             </div>
             <div class="navbar-nav ms-auto">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2 search-input" type="search" placeholder="Search product">
+                <form class="d-flex" role="search" action="/products/search" method="GET">
+                    <input class="form-control me-2 search-input" type="search" placeholder="Search product" name="q"
+                        aria-label="Search">
                     <button class="btn search-btn" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i> Search
                     </button>
@@ -102,12 +103,12 @@
                             <% } %>
 
                                 <% if ( currUser && currUser.role !="seller" ) { %>
-                                    <a href="/cart" class="nav-link position-relative me-3" style=" padding-top: 12px;">
+                                    <a href="/cart" class="nav-link position-relative me-3" style="padding-top: 12px;">
                                         <i class="fas fa-shopping-cart fs-5 mt-2 position-relative"></i>
-                                        <% if (locals.cartItemCount) { %>
+                                        <% if (cartItemCount && cartItemCount> 0) { %>
                                             <span
-                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                                style="font-size: 0.75rem; top: -5px; left: 75%;">
+                                                class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger cart-count-badge"
+                                                style="font-size: 0.75rem;">
                                                 <%= cartItemCount %>
                                                     <span class="visually-hidden">items in cart</span>
                                             </span>

@@ -1,6 +1,15 @@
 const Cart = require("../models/cart");
 const Listing = require("../models/listing");
 
+// Add this helper function at the top of the file
+const updateCartCount = async (req) => {
+  const cart = await Cart.findOne({ user: req.user._id });
+  req.session.cartItemCount = cart
+    ? cart.items.reduce((total, item) => total + item.quantity, 0)
+    : 0;
+  return req.session.cartItemCount;
+};
+
 // Get user's cart s
 module.exports.getCart = async (req, res) => {
   try {
@@ -26,29 +35,24 @@ module.exports.addToCart = async (req, res) => {
     const { id } = req.params;
     const quantity = parseInt(req.body.quantity) || 1;
 
-    // Find the product
     const product = await Listing.findById(id);
     if (!product) {
       req.flash("error", "Product not found");
       return res.redirect("/products");
     }
 
-    // Find user's cart or create a new one
     let cart = await Cart.findOne({ user: req.user._id });
     if (!cart) {
       cart = new Cart({ user: req.user._id, items: [] });
     }
 
-    // Check if product already exists in cart
     const existingItemIndex = cart.items.findIndex(
       (item) => item.product.toString() === id
     );
 
     if (existingItemIndex > -1) {
-      // Update quantity if product already in cart
       cart.items[existingItemIndex].quantity += quantity;
     } else {
-      // Add new item to cart
       cart.items.push({
         product: id,
         quantity: quantity,
@@ -57,9 +61,17 @@ module.exports.addToCart = async (req, res) => {
     }
 
     await cart.save();
+
+    // Update the count in locals
+    res.locals.cartItemCount = cart.items.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+
     req.flash("success", "Product added to cart");
     res.redirect(`/products/${id}`);
   } catch (err) {
+    console.error("Error adding to cart:", err);
     req.flash("error", "Failed to add item to cart");
     res.redirect("/products");
   }
@@ -93,6 +105,7 @@ module.exports.updateCartItem = async (req, res) => {
 
     cart.items[itemIndex].quantity = quantity;
     await cart.save();
+    await updateCartCount(req); // Update the cart count
 
     req.flash("success", "Cart updated successfully");
     res.redirect("/cart");
@@ -114,8 +127,8 @@ module.exports.removeFromCart = async (req, res) => {
     }
 
     cart.items = cart.items.filter((item) => item._id.toString() !== id);
-
     await cart.save();
+    await updateCartCount(req); // Update the cart count
 
     req.flash("success", "Item removed from cart");
     res.redirect("/cart");
@@ -132,6 +145,7 @@ module.exports.clearCart = async (req, res) => {
     if (cart) {
       cart.items = [];
       await cart.save();
+      await updateCartCount(req); // Update the cart count
     }
 
     req.flash("success", "Cart cleared successfully");

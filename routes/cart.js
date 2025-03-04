@@ -3,6 +3,7 @@ const router = express.Router();
 const { isLoggedIn } = require("../middleware.js");
 const cartController = require("../controllers/cart.js");
 const wrapAsync = require("../utils/wrapAsync.js");
+const Cart = require("../models/cart.js");
 
 // View cart
 router.get("/", isLoggedIn, wrapAsync(cartController.getCart));

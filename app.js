@@ -16,6 +16,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const { flashMiddleware, addCartCount } = require("./middleware.js");
+const Cart = require("./models/cart.js");
 
 const listingsRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
@@ -98,9 +99,9 @@ app.use(addCartCount);
 //Restructuring all routes
 app.use("/products", listingsRouter);
 app.use("/products/:id/reviews", reviewsRouter);
-app.use("/", userRouter);
 app.use("/cart", cartRouter);
 app.use("/payment", paymentRouter);
+app.use("/", userRouter);
 
 // app.get('/', (req, res) => {
 //     res.send("This is root page");

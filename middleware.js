@@ -90,15 +90,26 @@ module.exports.flashMiddleware = (req, res, next) => {
 
 // Add cart count to response locals
 module.exports.addCartCount = async (req, res, next) => {
-  if (req.user) {
-    try {
-      const cart = await Cart.findOne({ user: req.user._id });
-      if (cart && cart.items.length > 0) {
-        res.locals.cartItemCount = cart.items.length;
+  try {
+    if (req.user) {
+      const cart = await Cart.findOne({ user: req.user._id }).lean();
+      if (cart && Array.isArray(cart.items)) {
+        const count = cart.items.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        req.session.cartItemCount = count;
+        res.locals.cartItemCount = count;
+        await new Promise((resolve) => req.session.save(resolve));
+      } else {
+        res.locals.cartItemCount = 0;
       }
-    } catch (err) {
-      console.error("Error fetching cart count:", err);
+    } else {
+      res.locals.cartItemCount = 0;
     }
+  } catch (err) {
+    console.error("Error in addCartCount middleware:", err);
+    res.locals.cartItemCount = 0;
   }
   next();
 };

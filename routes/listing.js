@@ -11,6 +11,7 @@ const listingController = require("../controllers/listings.js");
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
+const Listing = require("../models/listing.js");
 
 router
   .route("/")
@@ -22,9 +23,36 @@ router
     wrapAsync(listingController.createListing)
   ); // Create route
 
-router
-  .route("/my-listings")
-  .get(isLoggedIn, isSeller, wrapAsync(listingController.showSellerListings));
+// Place search route BEFORE any routes with :id parameter
+router.get(
+  "/search",
+  wrapAsync(async (req, res) => {
+    const { q } = req.query;
+    let listings;
+
+    if (q && q.trim()) {
+      listings = await Listing.find({
+        $or: [
+          { title: { $regex: q, $options: "i" } },
+          { category: { $regex: q, $options: "i" } },
+          { district: { $regex: q, $options: "i" } },
+        ],
+      }).populate("owner");
+      console.log(`Search query: "${q}" - Found ${listings.length} results`);
+    } else {
+      listings = await Listing.find({}).populate("owner");
+    }
+
+    res.render("listing/search", { listings, searchQuery: q });
+  })
+);
+
+router.get(
+  "/my-listings",
+  isLoggedIn,
+  isSeller,
+  wrapAsync(listingController.showSellerListings)
+);
 
 // New route: Create operation, it is kept above id because id will be recognized as an ID
 router.get("/new", isLoggedIn, wrapAsync(listingController.renderNewForm));
@@ -38,6 +66,7 @@ router.get(
   wrapAsync(listingController.filterByCategory)
 );
 
+// Place these ID routes AFTER all other specific routes
 router
   .route("/:id")
   .get(wrapAsync(listingController.showListing)) // Show route

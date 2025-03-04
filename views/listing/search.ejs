@@ -1,0 +1,69 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="container mt-4">
+        <% if (searchQuery) { %>
+            <h2 class="mb-4">Search Results for "<%= searchQuery %>"</h2>
+            <p class="text-muted mb-4">
+                <%= listings.length %> products found
+            </p>
+            <% } %>
+
+                <% if (listings.length===0) { %>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No products found matching your search.
+                        <a href="/products" class="alert-link ms-2">View all products</a>
+                    </div>
+                    <% } else { %>
+                        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+                            <% for(let listing of listings) { %>
+                                <a href="/products/<%= listing._id %>" class="listing-link">
+                                    <div class="card col listing-card">
+                                        <img src="<%= listing.image.url %>" class="card-img-top" alt="Product image">
+                                        <div class="card-img-overlay">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </div>
+                                        <div class="card-body"
+                                            style="padding: 16px; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                                            <p class="card-text" style="font-family: Arial, sans-serif; color: #333;">
+                                                <b style="font-size: 18px; color: #2c3e50; letter-spacing: 1px;">
+                                                    <%= listing.title %>
+                                                </b>
+                                            <div class="mt-2">
+                                                <span class="badge bg-primary me-2">
+                                                    <%= listing.category %>
+                                                </span>
+                                                <span class="badge bg-secondary">
+                                                    <%= listing.district %>
+                                                </span>
+                                            </div>
+                                            </p>
+                                            <div class="d-flex align-items-center justify-content-between mt-2">
+                                                <span
+                                                    style="font-size: 1.2rem; color: rgb(235, 62, 62); font-weight: 600;">
+                                                    <span style="font-size: 0.9rem;">₹</span>
+                                                    <%= listing.price %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <% } %>
+                        </div>
+
+                        <% if (listings.length> 0) { %>
+                            <div class="mt-4 text-center">
+                                <a href="/products" class="btn btn-outline-primary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to All Products
+                                </a>
+                            </div>
+                            <% } %>
+                                <% } %>
+
+                                    <div class="mt-4">
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Search tip: You can search by product name, category, or district
+                                        </div>
+                                    </div>
+    </div>
