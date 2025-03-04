@@ -253,19 +253,24 @@
                         style="padding: 16px; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
                         <p class="card-text" style="font-family: Arial, sans-serif; color: #333;">
                             <b style="font-size: 18px; color: #2c3e50; letter-spacing: 1px;">
-                                <%= listing.title%>
-                            </b><br>
+                                <%= listing.title %>
+                            </b>
+                        <div class="mt-2">
+                            <span class="badge bg-primary me-2">
+                                <%= listing.category %>
+                            </span>
+                            <span class="badge bg-secondary">
+                                <%= listing.district %>
+                            </span>
+                        </div>
                         </p>
-
-                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center justify-content-between mt-2">
                             <span style="font-size: 1.2rem; color: rgb(235, 62, 62); font-weight: 600;">
-                                <span style="font-size: 0.9rem;">&#8377;</span>
+                                <span style="font-size: 0.9rem;">₹</span>
                                 <%= listing.price %>
                             </span>
                         </div>
-
                     </div>
-
                 </div>
             </a>
             <% } %>
