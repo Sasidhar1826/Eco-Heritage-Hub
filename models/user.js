@@ -9,8 +9,12 @@ const userSchema = new Schema({
   },
   role: {
     type: "string",
-    num: ["user", "seller"],
+    enum: ["user", "seller"],
     required: true,
+  },
+  profileImage: {
+    url: String,
+    filename: String,
   },
   // Passport-Local Mongoose will add a username, hash and salt field to store the username, the hashed password and the salt value.
 });

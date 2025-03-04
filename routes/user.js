@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
-const { saveRedirectUrl } = require("../middleware.js");
+const { saveRedirectUrl, isLoggedIn } = require("../middleware.js");
 const userController = require("../controllers/users.js");
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 //home route
 
@@ -37,5 +40,15 @@ router
 //LogOut routes
 //Passport has inbuild function for logout
 router.get("/logout", userController.logout);
+
+// Profile edit routes
+router.get("/profile", isLoggedIn, userController.renderProfile);
+router.get("/profile/edit", isLoggedIn, userController.renderEditProfile);
+router.put(
+  "/profile",
+  isLoggedIn,
+  upload.single("profileImage"),
+  wrapAsync(userController.updateProfile)
+);
 
 module.exports = router;

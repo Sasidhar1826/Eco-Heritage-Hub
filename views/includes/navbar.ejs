@@ -118,24 +118,30 @@
                                         <i class="fas fa-receipt fs-5 me-2"></i>
                                         <span class="fw-bold">Orders</span>
                                     </a>
-                                    <i class="fa-regular fa-user ms-1 mt-3 me-2" id="change" style="
-                                    padding-top: 6px;
-                                "></i>
-                                    <div>
-                                        <p style="margin-top: 18px !important;" class="fw-bold fs-6 me-2 mt-2">
-                                            Hi,
-                                            <%= currUser.username %>
-                                        </p>
-                                    </div>
-                                    <% } %>
-                                        <% if(currUser) { %>
-
-                                            <a class="btn btn-danger logoutbtn userbtn" style=<%=currUser.role==="user"
-                                                ? "margin:10px;" :";" %> href="/logout">
-                                                <i class="fas fa-sign-out-alt"></i> Logout
+                                    <% if (currUser.profileImage && currUser.profileImage.url) { %>
+                                        <a href="/profile" class="nav-link">
+                                            <img src="<%= currUser.profileImage.url %>" alt="Profile"
+                                                class="rounded-circle"
+                                                style="width: 32px; height: 32px; object-fit: cover; margin-top: 5px;">
+                                        </a>
+                                        <% } else { %>
+                                            <a href="/profile" class="nav-link">
+                                                <i class="fa-regular fa-user mt-3 me-2" style="padding-top: 0px;"></i>
                                             </a>
-
                                             <% } %>
+                                                <h3 class="fw-bold me-2" style="font-size: medium; padding-top:21px">
+                                                    Hi, <%= currUser.username %>
+                                                </h3>
+                                                <% } %>
+                                                    <% if(currUser) { %>
+
+                                                        <a class="btn btn-danger logoutbtn userbtn"
+                                                            style=<%=currUser.role==="user" ? "margin:10px;" :";" %>
+                                                            href="/logout">
+                                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                                        </a>
+
+                                                        <% } %>
             </div>
         </div>
     </div>

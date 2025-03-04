@@ -1,0 +1,55 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Edit Profile</h3>
+
+                        <form action="/profile?_method=PUT" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="profileImage" class="form-label">Profile Picture</label>
+                                <input type="file" class="form-control" id="profileImage" name="profileImage"
+                                    accept="image/*">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                    value="<%= currUser.username %>" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="<%= currUser.email %>" required>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <h5>Change Password (optional)</h5>
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword">
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                                <a href="/profile" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
