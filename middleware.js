@@ -3,6 +3,7 @@ const Review = require("./models/review.js");
 const { listingSchema } = require("./schema.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { reviewSchema } = require("./schema.js");
+const Cart = require("./models/cart");
 
 //Middleware to check if user is logged in or not
 module.exports.isLoggedIn = (req, res, next) => {
@@ -77,4 +78,27 @@ module.exports.validateListing = (req, res, next) => {
   } else {
     next();
   }
+};
+
+// Middleware for flash
+module.exports.flashMiddleware = (req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user || null;
+  next();
+};
+
+// Add cart count to response locals
+module.exports.addCartCount = async (req, res, next) => {
+  if (req.user) {
+    try {
+      const cart = await Cart.findOne({ user: req.user._id });
+      if (cart && cart.items.length > 0) {
+        res.locals.cartItemCount = cart.items.length;
+      }
+    } catch (err) {
+      console.error("Error fetching cart count:", err);
+    }
+  }
+  next();
 };

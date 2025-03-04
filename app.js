@@ -15,11 +15,13 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const { flashMiddleware, addCartCount } = require("./middleware.js");
 
 const listingsRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const cartRouter = require("./routes/cart.js");
+const paymentRouter = require("./routes/payment.js");
 
 // connection with database
 // const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust'
@@ -38,6 +40,7 @@ async function main() {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
@@ -89,11 +92,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Add cart count to response locals
+app.use(addCartCount);
+
 //Restructuring all routes
 app.use("/products", listingsRouter);
 app.use("/products/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 app.use("/cart", cartRouter);
+app.use("/payment", paymentRouter);
 
 // app.get('/', (req, res) => {
 //     res.send("This is root page");

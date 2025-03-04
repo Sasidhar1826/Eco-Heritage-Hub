@@ -1,0 +1,296 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="container mt-5 mb-5">
+        <h1 class="mb-4">Checkout</h1>
+
+        <div class="row">
+            <!-- Order Summary -->
+            <div class="col-md-5 order-md-2 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Order Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group mb-3">
+                            <% cart.items.forEach(item=> { %>
+                                <li class="list-group-item d-flex justify-content-between lh-sm">
+                                    <div>
+                                        <h6 class="my-0">
+                                            <%= item.product.title %>
+                                        </h6>
+                                        <small class="text-muted">Quantity: <%= item.quantity %></small>
+                                    </div>
+                                    <span class="text-muted">₹<%= (item.price * item.quantity).toFixed(2) %></span>
+                                </li>
+                                <% }) %>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Total (INR)</span>
+                                        <strong>₹<%= cart.totalAmount.toFixed(2) %></strong>
+                                    </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Form -->
+            <div class="col-md-7 order-md-1">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Payment Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="error-message" class="alert alert-danger d-none"></div>
+                        <form id="payment-form" class="mt-4">
+                            <!-- Payment Method Selection -->
+                            <div class="mb-4">
+                                <h5>Select Payment Method</h5>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="customPayment"
+                                        value="custom" checked>
+                                    <label class="form-check-label" for="customPayment">
+                                        <i class="fas fa-credit-card me-2"></i>Custom Payment
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="codPayment"
+                                        value="cod">
+                                    <label class="form-check-label" for="codPayment">
+                                        <i class="fas fa-money-bill-wave me-2"></i>Cash on Delivery
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Custom Payment Fields (shown only for custom payment) -->
+                            <div id="customPaymentFields">
+                                <div class="mb-3">
+                                    <label for="cardName" class="form-label">Name on Card</label>
+                                    <input type="text" class="form-control" id="cardName"
+                                        placeholder="Enter name as on card">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cardNumber" class="form-label">Card Number</label>
+                                    <input type="text" class="form-control" id="cardNumber"
+                                        placeholder="1234 5678 9012 3456">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" class="form-control" id="cvv" placeholder="123">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="submit-button" class="btn btn-primary btn-lg w-100 mt-4">
+                                <i class="fas fa-lock me-2"></i>Pay ₹<%= cart.totalAmount.toFixed(2) %>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById('payment-form');
+            const submitButton = document.getElementById('submit-button');
+            const errorDisplay = document.getElementById('error-message');
+            const customPaymentRadio = document.getElementById('customPayment');
+            const codPaymentRadio = document.getElementById('codPayment');
+            const customPaymentFields = document.getElementById('customPaymentFields');
+            const cardNameInput = document.getElementById('cardName');
+            const cardNumberInput = document.getElementById('cardNumber');
+            const expiryDateInput = document.getElementById('expiryDate');
+            const cvvInput = document.getElementById('cvv');
+
+            // Toggle payment fields based on selected method
+            function togglePaymentFields() {
+                if (customPaymentRadio.checked) {
+                    customPaymentFields.style.display = 'block';
+                    submitButton.innerHTML = '<i class="fas fa-lock me-2"></i>Pay ₹<%= cart.totalAmount.toFixed(2) %>';
+                } else {
+                    customPaymentFields.style.display = 'none';
+                    submitButton.innerHTML = '<i class="fas fa-check me-2"></i>Place Order';
+                }
+            }
+
+            customPaymentRadio.addEventListener('change', togglePaymentFields);
+            codPaymentRadio.addEventListener('change', togglePaymentFields);
+            togglePaymentFields(); // Initial toggle
+
+            // Function to set loading state
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                } else {
+                    submitButton.disabled = false;
+                    togglePaymentFields();
+                }
+            }
+
+            // Validate form fields for custom payment
+            function validateCustomPaymentFields() {
+                if (!customPaymentRadio.checked) {
+                    return true; // No validation needed for COD
+                }
+
+                let isValid = true;
+                let errorMessage = '';
+
+                if (!cardNameInput.value.trim()) {
+                    errorMessage = 'Please enter the name on your card';
+                    isValid = false;
+                } else if (!cardNumberInput.value.trim() || cardNumberInput.value.trim().length < 16) {
+                    errorMessage = 'Please enter a valid card number';
+                    isValid = false;
+                } else if (!expiryDateInput.value.trim() || !expiryDateInput.value.includes('/')) {
+                    errorMessage = 'Please enter a valid expiry date (MM/YY)';
+                    isValid = false;
+                } else if (!cvvInput.value.trim() || cvvInput.value.trim().length < 3) {
+                    errorMessage = 'Please enter a valid CVV';
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    errorDisplay.textContent = errorMessage;
+                    errorDisplay.classList.remove('d-none');
+                } else {
+                    errorDisplay.classList.add('d-none');
+                }
+
+                return isValid;
+            }
+
+            // Process payment
+            async function handleSubmit(e) {
+                e.preventDefault();
+
+                // Validate form fields for custom payment
+                if (!validateCustomPaymentFields()) {
+                    return;
+                }
+
+                setLoading(true);
+                errorDisplay.classList.add('d-none');
+                errorDisplay.textContent = '';
+
+                try {
+                    // Get payment method
+                    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+                    console.log("Selected payment method:", paymentMethod);
+
+                    // Create payment intent
+                    console.log("Requesting payment ID...");
+                    const createResponse = await fetch('/payment/create-payment-intent', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ paymentMethod })
+                    });
+
+                    console.log("Create payment intent response status:", createResponse.status);
+
+                    if (!createResponse.ok) {
+                        const errorText = await createResponse.text();
+                        console.error("Create payment intent error response:", errorText);
+                        let errorMessage = 'Failed to initialize payment';
+                        try {
+                            const errorData = JSON.parse(errorText);
+                            errorMessage = errorData.error || errorMessage;
+                        } catch (e) {
+                            console.error("Failed to parse error response:", e);
+                        }
+                        throw new Error(errorMessage);
+                    }
+
+                    // Get the response text
+                    const responseText = await createResponse.text();
+                    console.log("Raw response from create-payment-intent:", responseText);
+
+                    // Parse the response
+                    let responseData;
+                    try {
+                        responseData = JSON.parse(responseText);
+                    } catch (parseError) {
+                        console.error("Failed to parse create-payment-intent response:", parseError);
+                        throw new Error('Invalid response from server');
+                    }
+
+                    console.log("Parsed response data:", responseData);
+
+                    if (!responseData || !responseData.paymentId) {
+                        throw new Error('No payment ID received from server');
+                    }
+
+                    const paymentId = responseData.paymentId;
+                    console.log("Using payment ID:", paymentId);
+
+                    // Create the request payload
+                    const paymentData = {
+                        paymentId: paymentId,
+                        paymentMethod: paymentMethod
+                    };
+
+                    console.log("Sending payment data:", JSON.stringify(paymentData));
+
+                    // Process payment
+                    console.log("Processing payment...");
+                    const processResponse = await fetch('/payment/process-payment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(paymentData)
+                    });
+
+                    console.log("Process payment response status:", processResponse.status);
+
+                    // Get the response text
+                    const processResponseText = await processResponse.text();
+                    console.log("Process payment raw response:", processResponseText);
+
+                    if (!processResponse.ok) {
+                        let errorMessage = 'Payment processing failed';
+                        try {
+                            const errorData = JSON.parse(processResponseText);
+                            errorMessage = errorData.error || errorMessage;
+                        } catch (e) {
+                            console.error("Failed to parse error response:", e);
+                        }
+                        throw new Error(errorMessage);
+                    }
+
+                    // Parse the process response
+                    let processResult;
+                    try {
+                        processResult = JSON.parse(processResponseText);
+                    } catch (parseError) {
+                        console.error("Failed to parse process response:", parseError);
+                        throw new Error('Invalid response from server');
+                    }
+
+                    console.log("Payment process result:", processResult);
+
+                    if (processResult.success && processResult.orderId) {
+                        // Redirect to success page
+                        window.location.href = `/payment/success?orderId=${processResult.orderId}`;
+                    } else {
+                        throw new Error('Payment was not successful - missing success flag or order ID');
+                    }
+                } catch (error) {
+                    console.error("Payment error:", error);
+                    errorDisplay.textContent = error.message || 'Payment failed. Please try again.';
+                    errorDisplay.classList.remove('d-none');
+                    setLoading(false);
+                }
+            }
+
+            form.addEventListener('submit', handleSubmit);
+        });
+    </script>

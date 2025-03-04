@@ -1,0 +1,133 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="container mt-5 mb-5">
+        <div class="mb-4">
+            <a href="/payment/orders" class="text-decoration-none">
+                <i class="fas fa-arrow-left me-2"></i>Back to Orders
+            </a>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Order #<%= order._id.toString().slice(-6) %>
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Order Information</h5>
+                        <p><strong>Order ID:</strong>
+                            <%= order._id %>
+                        </p>
+                        <p><strong>Date:</strong>
+                            <%= new Date(order.createdAt).toLocaleString() %>
+                        </p>
+                        <p><strong>Total Amount:</strong> ₹<%= order.totalAmount.toFixed(2) %>
+                        </p>
+                        <p>
+                            <strong>Payment Status:</strong>
+                            <span class="badge bg-<%= order.paymentInfo.status === 'paid' ? 'success' : 'warning' %>">
+                                <%= order.paymentInfo.status==='paid' ? 'Paid' : 'Pending' %>
+                            </span>
+                        </p>
+                        <p>
+                            <strong>Order Status:</strong>
+                            <span class="badge bg-<%= 
+              order.orderStatus === 'processing' ? 'info' : 
+              order.orderStatus === 'shipped' ? 'primary' : 
+              order.orderStatus === 'delivered' ? 'success' : 'danger' 
+            %>">
+                                <%= order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1) %>
+                            </span>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Shipping Information</h5>
+                        <p><strong>Name:</strong>
+                            <%= order.shippingAddress.name %>
+                        </p>
+                        <p><strong>Address:</strong>
+                            <%= order.shippingAddress.addressLine1 %>
+                        </p>
+                        <% if (order.shippingAddress.addressLine2) { %>
+                            <p><strong>Address Line 2:</strong>
+                                <%= order.shippingAddress.addressLine2 %>
+                            </p>
+                            <% } %>
+                                <p><strong>City:</strong>
+                                    <%= order.shippingAddress.city %>
+                                </p>
+                                <p><strong>State:</strong>
+                                    <%= order.shippingAddress.state %>
+                                </p>
+                                <p><strong>Postal Code:</strong>
+                                    <%= order.shippingAddress.postalCode %>
+                                </p>
+                                <p><strong>Country:</strong>
+                                    <%= order.shippingAddress.country %>
+                                </p>
+                    </div>
+                </div>
+
+                <h5 class="mb-3">Order Items</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% order.items.forEach(item=> { %>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <% if (item.product && item.product.image && item.product.image.url) { %>
+                                                <img src="<%= item.product.image.url %>" alt="<%= item.product.title %>"
+                                                    class="img-thumbnail me-3"
+                                                    style="width: 60px; height: 60px; object-fit: cover;">
+                                                <% } else { %>
+                                                    <div class="bg-secondary me-3" style="width: 60px; height: 60px;">
+                                                    </div>
+                                                    <% } %>
+                                                        <div>
+                                                            <h6 class="mb-0">
+                                                                <%= item.product ? item.product.title
+                                                                    : 'Product Unavailable' %>
+                                                            </h6>
+                                                        </div>
+                                        </div>
+                                    </td>
+                                    <td>₹<%= item.price.toFixed(2) %>
+                                    </td>
+                                    <td>
+                                        <%= item.quantity %>
+                                    </td>
+                                    <td>₹<%= (item.price * item.quantity).toFixed(2) %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold">Total:</td>
+                                <td class="fw-bold">₹<%= order.totalAmount.toFixed(2) %>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="/payment/orders" class="btn btn-outline-primary">
+                <i class="fas fa-list me-2"></i>Back to Orders
+            </a>
+            <a href="/products" class="btn btn-primary">
+                <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+            </a>
+        </div>
+    </div>
