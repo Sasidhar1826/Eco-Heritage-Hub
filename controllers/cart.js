@@ -1,7 +1,7 @@
 const Cart = require("../models/cart");
 const Listing = require("../models/listing");
 
-// Get user's cart
+// Get user's cart s
 module.exports.getCart = async (req, res) => {
   try {
     let cart = await Cart.findOne({ user: req.user._id }).populate({

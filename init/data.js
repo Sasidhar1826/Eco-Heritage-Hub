@@ -1,4 +1,5 @@
 const sampleListings = [
+  //s
   {
     title: "Cozy Beachfront Cottage",
     description:

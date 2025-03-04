@@ -7,7 +7,7 @@ const Cart = require("../models/cart");
 const Order = require("../models/order");
 const User = require("../models/user");
 
-// Render checkout page
+// Render checkout page s
 module.exports.renderCheckout = async (req, res) => {
   try {
     // Get user's cart

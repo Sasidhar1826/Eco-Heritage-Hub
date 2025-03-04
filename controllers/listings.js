@@ -15,7 +15,7 @@ module.exports.renderNewForm = async (req, res) => {
 module.exports.showListing = async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id)
-    .populate({ path: "reviews", populate: { path: "author" } }) //nested populate
+    .populate({ path: "reviews", populate: { path: "author" } }) //nested populate s
     .populate("owner");
   if (!listing) {
     req.flash("error", "Listing you are requested for doesnot exist!!");

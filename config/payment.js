@@ -1,4 +1,4 @@
-// Custom payment configuration
+// Custom payment configurations
 const generatePaymentId = () => {
   // Generate a unique payment ID with timestamp and random string
   const timestamp = Date.now();

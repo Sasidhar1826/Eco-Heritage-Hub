@@ -4,9 +4,12 @@
     <style>
         #filters {
             display: flex;
+            flex-direction: row !important;
+            /* force same line */
+            flex-wrap: nowrap !important;
+            /* prevent wrapping */
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             padding: 0.1rem !important;
             background-color: #f8fafc !important;
             border-radius: 1rem !important;
@@ -110,11 +113,9 @@
         }
 
         @media (max-width: 768px) {
-            #filters {
-                flex-direction: column !important;
-                gap: 1rem !important;
-            }
 
+            /* The media query is left intact if you need other responsive changes,
+               but the !important rules above will keep the filters in a row */
             .filter-swiper {
                 width: 100% !important;
             }
